@@ -1,0 +1,2 @@
+# AI
+SPPU AI Practicals
