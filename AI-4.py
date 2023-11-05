@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 '''Implement a solution for a Constraint Satisfaction Problem using Branch and Bound and Backtracking
 for n-queens problem or a graph coloring problem.'''
 
@@ -61,9 +55,7 @@ if __name__ == '__main__':
 	# Function call
 	g.graphColouring(m)
 
-
-# In[3]:
-
+#===========================================================================================================================
 
 '''program to solve N Queen Problem using Branch or Bound'''
 import heapq
@@ -114,10 +106,3 @@ def print_solutions(solutions, technique_name):
 n = 8  # Change 'n' to the desired board size
 solutions_branch_bound = list(solve_n_queens_branch_and_bound(n))
 print_solutions(solutions_branch_bound, "Branch and Bound")
-
-
-# In[ ]:
-
-
-
-
