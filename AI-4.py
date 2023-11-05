@@ -1,108 +1,72 @@
 '''Implement a solution for a Constraint Satisfaction Problem using Branch and Bound and Backtracking
-for n-queens problem or a graph coloring problem.'''
+for a graph coloring problem.'''
 
-# Python3 program for solution of M Coloring
-# problem using backtracking
-
-
-class Graph():
-
-	def __init__(self, vertices):
-		self.V = vertices
-		self.graph = [[0 for column in range(vertices)]
-					for row in range(vertices)]
-
-	# A utility function to check
-	# if the current color assignment
-	# is safe for vertex v
-	def isSafe(self, v, colour, c):
-		for i in range(self.V):
-			if self.graph[v][i] == 1 and colour[i] == c:
-				return False
-		return True
-
-	# A recursive utility function to solve m
-	# coloring problem
-	def graphColourUtil(self, m, colour, v):
-		if v == self.V:
-			return True
-
-		for c in range(1, m + 1):
-			if self.isSafe(v, colour, c) == True:
-				colour[v] = c
-				if self.graphColourUtil(m, colour, v + 1) == True:
-					return True
-				colour[v] = 0
-
-	def graphColouring(self, m):
-		colour = [0] * self.V
-		if self.graphColourUtil(m, colour, 0) == None:
-			return False
-
-		# Print the solution
-		print("Solution exist and Following are the assigned colours:")
-		for c in colour:
-			print(c, end=' ')
-		return True
-
-
-# Driver Code
-if __name__ == '__main__':
-	g = Graph(4)
-	g.graph = [[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 1], [1, 0, 1, 0]]
-	m = 3
-
-	# Function call
-	g.graphColouring(m)
-
-#===========================================================================================================================
-
-'''program to solve N Queen Problem using Branch or Bound'''
-import heapq
-
-def is_safe(board, row, col, n):
-    # Check if there's a queen in the same column
-    for i in range(row):
-        if board[i] == col or board[i] - i == col - row or board[i] + i == col + row:
+def is_safe(graph, v, c, color, n, result):
+    for i in range(n):
+        if graph[v][i] and color[i] == c:
             return False
     return True
 
-def solve_n_queens_branch_and_bound(n):
-    min_heap = []  # Priority queue to process promising nodes
+def graph_coloring_bb_util(graph, m, color, v, n, result):
+    if v == n:
+        result.append(color[:])
+        return
 
-    def heuristic(board, row, n):
-        # A heuristic to prioritize nodes
-        # Here, we prioritize the placement of queens in the left-most columns
-        return n - row
+    for c in range(1, m + 1):
+        if is_safe(graph, v, c, color, n, result):
+            color[v] = c
+            graph_coloring_bb_util(graph, m, color, v + 1, n, result)
+            color[v] = 0
 
-    # Initialize the priority queue with an empty board
-    heapq.heappush(min_heap, (0, [-1] * n))
+def graph_coloring_bb(graph, m):
+    n = len(graph)
+    result = []
+    color = [0] * n
+    graph_coloring_bb_util(graph, m, color, 0, n, result)
+    return result
 
-    while min_heap:
-        (cost, board) = heapq.heappop(min_heap)
-        row = board.index(-1)
-        
-        if row == n - 1:  # If all queens are placed, add the solution
-            yield board
-        else:
-            for col in range(n):
-                if is_safe(board, row, col, n):
-                    new_board = board[:]
-                    new_board[row] = col
-                    new_cost = heuristic(new_board, row + 1, n)
-                    heapq.heappush(min_heap, (new_cost, new_board))
+def graph_coloring_backtracking(graph, m):
+    n = len(graph)
+    result = [-1] * n
 
-def print_solutions(solutions, technique_name):
-    if solutions:
-        print(f"Solutions found using {technique_name}:")
-        for idx, solution in enumerate(solutions):
-            print(f"Solution {idx + 1}:")
-            for row in solution:
-                print('.' * row + 'Q' + '.' * (len(solution) - row - 1))
-            print()
-    else:
-        print(f"No solutions found using {technique_name}.")
+    def is_valid(v, c):
+        for i in range(n):
+            if graph[v][i] and result[i] == c:
+                return False
+        return True
 
-n = 8  # Change 'n' to the desired board size
-solutions_branch_bound = list(solve_n_queens_branch_and_bound(n))
-print_solutions(solutions_branch_bound, "Branch and Bound")
+    def graph_coloring_util(v):
+        if v == n:
+            return True
+
+        for c in range(1, m + 1):
+            if is_valid(v, c):
+                result[v] = c
+                if graph_coloring_util(v + 1):
+                    return True
+                result[v] = -1
+
+    if not graph_coloring_util(0):
+        return []
+
+    return result
+
+# Example usage:
+graph = [[0, 1, 1, 1],
+         [1, 0, 1, 0],
+         [1, 1, 0, 1],
+         [1, 0, 1, 0]]
+m = 3  # Number of colors
+
+print("Graph Coloring using Branching and Bound:")
+bb_result = graph_coloring_bb(graph, m)
+if bb_result:
+    for idx, coloring in enumerate(bb_result):
+        print(f"Solution {idx + 1}: {coloring}")
+
+print("\nGraph Coloring using Backtracking:")
+backtrack_result = graph_coloring_backtracking(graph, m)
+if backtrack_result:
+    print("Solution:", backtrack_result)
+else:
+    print("No valid coloring found.")
