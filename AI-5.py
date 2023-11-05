@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
-
-
 '''Implement Greedy search algorithm for Job Scheduling Problem '''
 def greedy_job_scheduling(jobs):
     # Sort the jobs in descending order of their deadlines
@@ -32,10 +26,3 @@ scheduled_jobs = greedy_job_scheduling(jobs)
 print("Scheduled Jobs:")
 for job in scheduled_jobs:
     print(f"Job {job[0]} (Processing Time: {job[1]}, Deadline: {job[2]})")
-
-
-# In[ ]:
-
-
-
-
