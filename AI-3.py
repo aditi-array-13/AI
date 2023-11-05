@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
 ''' Implement Alpha-Beta Tree search for any game search problem.'''
 class TreeNode:
     def __init__(self, value):
@@ -57,10 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# In[ ]:
-
-
-
-
