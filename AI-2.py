@@ -1,15 +1,19 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[4]:
-
-
-'''Implement A star (A*) Algorithm for any game search problem.'''
+def heuristic(node):
+    # Replace this with your heuristic function to estimate the cost from the current node to the goal
+    heuristic_values = {
+        'A': 7,
+        'B': 6,
+        'C': 2,
+        'D': 1,
+        'E': 2,
+        'G': 0,
+    }
+    return heuristic_values[node]
 
 def aStarAlgo(start_node, stop_node, graph):
-    open_set = set([start_node])#keep a node of node to be evaluated means (f=g+h)has not done yet 
-    closed_set = set()#stores nodes that have already evaluated
-    g = {node: float('inf') for node in graph}#g dictionary keeps a track of cost to reach each node. initially all cost= infinity
+    open_set = set([start_node])
+    closed_set = set()
+    g = {node: float('inf') for node in graph}
     g[start_node] = 0
     parents = {node: None for node in graph}
 
@@ -58,10 +62,3 @@ if path:
     print(f'Shortest path from {start_node} to {stop_node}: {path}')
 else:
     print('No path exists.')
-
-
-# In[ ]:
-
-
-
-
